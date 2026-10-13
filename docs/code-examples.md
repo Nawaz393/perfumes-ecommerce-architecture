@@ -2,7 +2,7 @@
 
 [← Main README](../README.md) · [← Documentation index](README.md)
 
-The following production code examples are extracted directly from the **Luxin Perfumes (LUXINPERFUMES.COM)** codebase (`/home/mnk/Code/React/XtremeScent`), illustrating architectural patterns, Supabase data access, client-side caching, and transactional safety.
+This document provides production code examples from the luxury fragrance e-commerce platform, illustrating architectural patterns, Supabase data access, client-side caching, and transactional safety.
 
 ---
 

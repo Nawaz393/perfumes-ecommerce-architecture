@@ -2,7 +2,7 @@
 
 [← Main README](../README.md) · [← Documentation index](README.md)
 
-This deep dive details the architecture, design choices, and data modeling of the **custom headless CMS engine** designed for **Luxin Perfumes (LUXINPERFUMES.COM)**.
+This deep dive details the architecture, design choices, and data modeling of the **custom headless CMS engine** designed for the **Luxury Fragrance E-Commerce Platform**.
 
 ---
 
@@ -10,7 +10,7 @@ This deep dive details the architecture, design choices, and data modeling of th
 
 Traditional e-commerce platforms often integrate third-party Headless CMS providers (such as Sanity, Contentful, or Strapi) to empower non-technical administrators to manage marketing banners, brand narratives, and legal policies.
 
-In the context of Luxin Perfumes, this introduced distinct liabilities:
+For a prestige digital boutique, this introduced distinct liabilities:
 - **Recurring Cost Overheads:** Monthly SaaS tier costs ranging from $50 to $250+/month for standard e-commerce copy.
 - **Deployment Coupling:** Hardcoding marketing copy into React JSX components required a Vite rebuild and Vercel/Cloudflare redeployment for minor text or promotional edits.
 - **Data Fragmentation:** Fragmented product imagery and CMS media across external CDNs vs. the primary Supabase storage bucket.
@@ -79,15 +79,15 @@ Models marketing hero banners, the infinite marquee, and the curated fragrance w
 
 ```json
 {
-  "heroTitle": "LUXINPERFUMES.COM",
+  "heroTitle": "Haute Parfumerie Prestige",
   "heroSubtitle": "Haute Parfumerie & Pure Extraits",
-  "heroDescription": "Exclusive Dubai Oud, Taif Rose, and French Prestige Fragrances.",
+  "heroDescription": "Exclusive Prestige Oud, Taif Rose, and French Heritage Fragrances.",
   "heroImage": "https://.../cms/hero_banner.webp",
   "marqueeItems": [
-    "SAME-DAY DUBAI & UAE DELIVERY",
+    "SAME-DAY EXPRESS DELIVERY",
     "100% GUARANTEED AUTHENTIC",
     "ROYAL COMPLIMENTARY GIFT WRAPPING",
-    "EXCLUSIVE DUBAI OUD SIGNATURES"
+    "EXCLUSIVE PRESTIGE OUD SIGNATURES"
   ],
   "signatureWorlds": [
     {
@@ -121,11 +121,11 @@ Models structured compliance documentation:
 {
   "title": "Terms & Conditions",
   "lastUpdated": "01/11/2025",
-  "introText": "These Terms and Conditions govern your use of the LUXINPERFUMES.COM website...",
+  "introText": "These Terms and Conditions govern your use of the website...",
   "sections": [
     {
       "title": "1. Intellectual Property",
-      "body": "The Service and its original content are the exclusive property of Prime Choose Perfumes...",
+      "body": "The Service and its original content are the exclusive property of the operating entity...",
       "listType": "none",
       "items": []
     },
@@ -148,7 +148,7 @@ Models structured compliance documentation:
 
 A common pitfall with headless CMS architectures is application crash during missing database rows (e.g., initial system bootstrap or catastrophic accidental deletion).
 
-Luxin Perfumes implements a **Two-Tier Resilient Fallback Pattern**:
+The platform implements a **Two-Tier Resilient Fallback Pattern**:
 1. **PGRST116 Trap:** In `src/services/content.js`, if Supabase PostgREST returns error code `PGRST116` (no rows found), the service gracefully returns an empty object rather than throwing.
 2. **Default Bundles:** Storefront pages merge server JSONB documents with bundled JavaScript defaults (`src/lib/policy-content-defaults.js`).
 

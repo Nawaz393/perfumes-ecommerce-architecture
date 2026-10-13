@@ -1,6 +1,6 @@
-# Luxin Perfumes (LUXINPERFUMES.COM) — E-Commerce Architecture Showcase
+# Luxury Fragrance E-Commerce Platform — Architecture Showcase
 
-A documentation-first architectural case study of **LUXINPERFUMES.COM**, an ultra-luxury Haute Parfumerie and digital commerce platform engineered for the Middle Eastern prestige fragrance market (Dubai, UAE), operated by **Prime Choose Perfumes & Cosmetics Trading LLC**.
+A documentation-first architectural case study of a bespoke Haute Parfumerie and digital commerce platform engineered for the prestige fragrance market, featuring luxury catalog exploration, variant-level inventory management, and an in-house headless CMS.
 
 ![React 18](https://img.shields.io/badge/React-18.2-61DAFB?logo=react&logoColor=black)
 ![Supabase](https://img.shields.io/badge/Supabase-PostgreSQL%20%7C%20Auth%20%7C%20Storage-3ECF8E?logo=supabase&logoColor=white)
@@ -12,7 +12,7 @@ A documentation-first architectural case study of **LUXINPERFUMES.COM**, an ultr
 
 ## Executive Overview
 
-**LUXINPERFUMES.COM** reconciles the sensory opulence of Parisian and Middle Eastern luxury perfumery with modern web engineering. The platform features an olfactory note architecture (Top, Heart, and Base fragrance pyramids), variant-level bottle inventory control, an in-house custom headless CMS, gamified customer loyalty mechanics, and dual payment rails (Stripe Hosted Checkout & UAE Cash on Delivery).
+The **Luxury Fragrance E-Commerce Platform** reconciles the sensory opulence of prestige perfumery with modern web engineering. The platform features an olfactory note architecture (Top, Heart, and Base fragrance pyramids), variant-level bottle inventory control, an in-house custom headless CMS, gamified customer loyalty mechanics, and dual payment rails (Stripe Hosted Checkout & Regional Cash on Delivery).
 
 The application couples a high-performance **React 18 SPA** with **Supabase (PostgreSQL 15+, GoTrue Auth, Storage CDN, PostgREST)** and a targeted **Node.js/Express API bridge** for PCI-compliant Stripe session creation. Sensitive business invariants—including atomic cart totals, promo coupon redemption, loyalty point calculations, and analytics aggregations—are enforced server-side via **9 PostgreSQL stored procedures (RPCs)**.
 

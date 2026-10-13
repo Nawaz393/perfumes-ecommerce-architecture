@@ -2,7 +2,7 @@
 
 [← Main README](../README.md) · [← Documentation Index](README.md)
 
-This document maps the domain boundaries, data models, entity relationships, and service responsibilities of the **LUXINPERFUMES.COM** architecture.
+This document maps the domain boundaries, data models, entity relationships, and service responsibilities of the **Luxury Fragrance E-Commerce Platform**.
 
 ---
 

@@ -2,18 +2,18 @@
 
 [← Main README](../README.md) · [← Documentation Index](README.md)
 
-This document details the dual payment rails, checkout saga, inventory decrement rules, and reconciliation strategies in **LUXINPERFUMES.COM**.
+This document details the dual payment rails, checkout saga, inventory decrement rules, and reconciliation strategies in the **Luxury Fragrance E-Commerce Platform**.
 
 ---
 
 ## 1. Dual Payment Rails Architecture
 
-LUXINPERFUMES.COM serves both international online shoppers and regional Middle Eastern clients by providing two distinct checkout rails:
+The platform serves both international online shoppers and regional Middle Eastern clients by providing two distinct checkout rails:
 
 | Rail | Target Audience | Settlement Flow | Fulfillment Trigger |
 |---|---|---|---|
 | **Stripe Hosted Checkout** | International & Card Buyers (AED/USD) | Immediate card authorization via Stripe API bridge | Webhook `checkout.session.completed` |
-| **UAE Cash on Delivery (COD)** | Regional Dubai/UAE Customers | Order placed in `pending_cod` state | Courier dispatch confirmation |
+| **Regional Cash on Delivery (COD)** | Regional Customers | Order placed in `pending_cod` state | Courier dispatch confirmation |
 
 ---
 

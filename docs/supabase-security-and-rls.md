@@ -2,7 +2,7 @@
 
 [← Main README](../README.md) · [← Documentation Index](README.md)
 
-This document details the multi-role security architecture, Row Level Security (RLS) enforcement, and GoTrue token verification implemented across all 12 PostgreSQL tables in **LUXINPERFUMES.COM**.
+This document details the multi-role security architecture, Row Level Security (RLS) enforcement, and GoTrue token verification implemented across all 12 PostgreSQL tables in the **Luxury Fragrance E-Commerce Platform**.
 
 ---
 

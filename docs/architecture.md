@@ -2,7 +2,7 @@
 
 [← Main README](../README.md) · [← Documentation Index](README.md)
 
-This document provides a comprehensive architectural breakdown of **LUXINPERFUMES.COM**, detailing the React 18 frontend runtime, TanStack Query hydration, Supabase BaaS data layer, Express API bridge, and caching strategies.
+This document provides a comprehensive architectural breakdown of the **Luxury Fragrance E-Commerce Platform**, detailing the React 18 frontend runtime, TanStack Query hydration, Supabase BaaS data layer, Express API bridge, and caching strategies.
 
 ---
 
@@ -19,7 +19,7 @@ flowchart TB
     end
 
     subgraph EdgeDelivery ["Edge CDN & Gateway"]
-        VHost["Custom Domain (luxinperfumes.com)"]
+        VHost["Custom Domain (e.g. luxury-perfumery.com)"]
         SSL["TLS Termination & HTTP/2"]
     end
 

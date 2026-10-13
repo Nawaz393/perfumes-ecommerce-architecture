@@ -2,7 +2,7 @@
 
 [← Main README](../../README.md) · [← Documentation index](../README.md)
 
-This directory records foundational architectural decisions for **Luxin Perfumes (LUXINPERFUMES.COM)**, capturing the context, decision, consequences, trade-offs, and evaluated alternatives.
+This directory records foundational architectural decisions for the **Luxury Fragrance E-Commerce Platform**, capturing the context, decision, consequences, trade-offs, and evaluated alternatives.
 
 ## Index of Decisions
 

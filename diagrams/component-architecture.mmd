@@ -1,0 +1,82 @@
+flowchart TD
+    subgraph RootLevel["Root & Context Providers"]
+        APP["App.jsx\n(BrowserRouter)"]
+        AUTH_PROV["AuthProvider\n(User, Profile, AuthState)"]
+        ORDER_PROV["OrderProvider\n(Active Order Persist)"]
+        QUERY_PROV["QueryClientProvider\n(TanStack Query v5)"]
+        HELMET_PROV["HelmetProvider\n(SEO & Meta Tags)"]
+    end
+
+    APP --> AUTH_PROV
+    AUTH_PROV --> ORDER_PROV
+    ORDER_PROV --> QUERY_PROV
+    QUERY_PROV --> HELMET_PROV
+
+    subgraph GuardsLayer["Guards & Layout Selectors (WithGuards)"]
+        REQ_MAINT["RequireMaintenanceOpen\n(Checks store_settings.maintenance_mode)"]
+        REQ_AUTH["RequireAuth\n(Checks user session & role == 'admin')"]
+        WITH_STRIPE["WithStripe\n(Elements stripe={stripePromise})"]
+    end
+
+    HELMET_PROV --> REQ_MAINT
+    REQ_MAINT --> REQ_AUTH
+    REQ_AUTH --> WITH_STRIPE
+
+    subgraph PublicBranch["Public Storefront Layout (PublicLayout)"]
+        NAVBAR["Navbar Component\n(Brand Logo, Nav Links, Search, Cart Drawer, Wishlist)"]
+        PUBLIC_OUTLET["<Outlet /> (Page Viewport)"]
+        FOOTER["Footer Component\n(Heritage Links, Newsletter, Socials, Policy Links)"]
+
+        subgraph PublicPages["Storefront Feature Pages"]
+            HOME["HomePage\n(Hero, Worlds, Marquee, ValueProps, GiftRewardDialog)"]
+            CATALOG["ProductsPage\n(ProductFilters, ProductGrid, ProductComparison)"]
+            PDP["ProductDetailPage\n(ImageGallery, OlfactoryPyramidTabs, MultiSizeSelector)"]
+            CART["CartPage\n(useCartController, LineItems, CouponBox, PointsRedeem)"]
+            CHECKOUT["CheckoutPage\n(UAE Address, Shipping Rules, Stripe/COD Select)"]
+            ORDERS["CustomerOrdersPage\n(Visual Stepper, Self-Service Cancellation)"]
+            REWARDS["GiftsRewardsPage\n(Gamified Spin-to-Win, Point Balance)"]
+            CMS_PAGES["Static / Content Pages\n(AboutPage, BrandsPage, FaqPage, PolicyPages)"]
+        end
+    end
+
+    subgraph AdminBranch["Admin Command Center Layout (AdminLayout)"]
+        THEME_EFF["Runtime Theme Injection\n(document.body.classList.add('admin-theme'))"]
+        ADMIN_SIDEBAR["AdminSidebar\n(Navigation Items, Collapse State, Role Guard)"]
+        ADMIN_HEADER["AdminHeader\n(Active Section Title, Admin Profile, Logout)"]
+        ADMIN_OUTLET["<Outlet /> (Admin Operations Viewport)"]
+
+        subgraph AdminPages["Operations & Back-Office Modules"]
+            ADMIN_DASH["AdminDashboard\n(RPC Stats, Recharts 6-Month Velocity, Top 5 SKUs)"]
+            ADMIN_PROD["AdminProducts & EditPage\n(Variant Matrix, Olfactory Notes, Stock Control)"]
+            ADMIN_ORDERS["AdminOrders\n(Fulfillment State Machine, Address & Tracking)"]
+            ADMIN_CMS["AdminContent\n(HomeEditor, WorldCurator, PolicyBuilder, Branding)"]
+            ADMIN_PROMOS["AdminCoupons & AdminOffers\n(Discount Rules, Date Ranges)"]
+            ADMIN_SETTINGS["AdminSettings\n(Maintenance Toggle, Loyalty Conversion, Logo CDN)"]
+        end
+    end
+
+    WITH_STRIPE -->|Public Routes| NAVBAR
+    NAVBAR --> PUBLIC_OUTLET
+    PUBLIC_OUTLET --> FOOTER
+
+    PUBLIC_OUTLET --> HOME
+    PUBLIC_OUTLET --> CATALOG
+    PUBLIC_OUTLET --> PDP
+    PUBLIC_OUTLET --> CART
+    PUBLIC_OUTLET --> CHECKOUT
+    PUBLIC_OUTLET --> ORDERS
+    PUBLIC_OUTLET --> REWARDS
+    PUBLIC_OUTLET --> CMS_PAGES
+
+    WITH_STRIPE -->|Route: /admin/*| THEME_EFF
+    THEME_EFF --> ADMIN_SIDEBAR
+    THEME_EFF --> ADMIN_HEADER
+    ADMIN_SIDEBAR --> ADMIN_OUTLET
+    ADMIN_HEADER --> ADMIN_OUTLET
+
+    ADMIN_OUTLET --> ADMIN_DASH
+    ADMIN_OUTLET --> ADMIN_PROD
+    ADMIN_OUTLET --> ADMIN_ORDERS
+    ADMIN_OUTLET --> ADMIN_CMS
+    ADMIN_OUTLET --> ADMIN_PROMOS
+    ADMIN_OUTLET --> ADMIN_SETTINGS

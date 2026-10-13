@@ -1,0 +1,53 @@
+flowchart TB
+    subgraph Clients["Client Tier"]
+        STOREFRONT["Storefront Consumer\n(Desktop & Mobile Web)"]
+        ADMIN["Store Operator\n(Admin Console Workspace)"]
+    end
+
+    subgraph Edge["Edge & Delivery Infrastructure"]
+        VITE_CDN["Vite SPA Static Assets / CDN\n(HTML, JS, CSS Bundles)"]
+        STORAGE_CDN["Supabase Storage CDN\n('products' Bucket - Media & CMS Assets)"]
+    end
+
+    subgraph AppTier["Frontend Application Layer (React 18 SPA)"]
+        ROUTER["React Router v6\n(Nested Layouts & Route Guards)"]
+        QUERY["TanStack React Query v5\n(Server Cache & Stale-Time Revalidation)"]
+        AUTH_CTX["AuthContext\n(Supabase JWT Session & Role State)"]
+        CART_CTX["useCartController & OrderContext\n(Local Persist & Optimistic State)"]
+    end
+
+    subgraph BaaSTier["Backend-as-a-Service (Supabase)"]
+        AUTH["Supabase Auth Service\n(GoTrue JWT, Signup, Password Recovery)"]
+        PG[("Supabase PostgreSQL 15+\n(12 Relational Tables + JSONB Documents)")]
+        RPCS["PostgreSQL Stored Procedures\n(9 PL/pgSQL Business RPCs)"]
+        STORAGE["Supabase Object Storage\n(Product Images & CMS Uploads)"]
+    end
+
+    subgraph ServicesTier["External Services & Bridge"]
+        EXPRESS_API["Node.js / Express API Bridge\n(Stripe Session Orchestration & Secure Tasks)"]
+        STRIPE["Stripe Payment Gateway\n(Hosted Checkout & Webhook Events)"]
+    end
+
+    STOREFRONT -->|Loads SPA Bundle| VITE_CDN
+    ADMIN -->|Loads SPA Bundle| VITE_CDN
+    STOREFRONT -->|Views Media| STORAGE_CDN
+    ADMIN -->|Uploads Media| STORAGE
+
+    STOREFRONT --> ROUTER
+    ADMIN --> ROUTER
+    ROUTER --> AUTH_CTX
+    ROUTER --> QUERY
+    ROUTER --> CART_CTX
+
+    AUTH_CTX -->|JWT Auth Lifecycle| AUTH
+    AUTH -->|User Identity & Claims| PG
+    QUERY -->|Direct REST / PostgREST| PG
+    CART_CTX -->|RPC Executions| RPCS
+    RPCS -->|Atomic Transactions & Calculations| PG
+    ADMIN -->|CMS Image Uploads| STORAGE
+    STORAGE --> STORAGE_CDN
+
+    CART_CTX -->|Authenticated Orders / Checkout| EXPRESS_API
+    EXPRESS_API -->|Create Checkout Session| STRIPE
+    EXPRESS_API -->|Direct Order Persistence| PG
+    STRIPE -->|Payment Status Redirect & Webhooks| EXPRESS_API

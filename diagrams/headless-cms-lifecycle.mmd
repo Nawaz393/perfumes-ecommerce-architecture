@@ -1,0 +1,39 @@
+flowchart LR
+    subgraph AdminExperience["Admin Command Center (React 18)"]
+        OPERATOR["Store Operator / Content Editor"]
+        EDITOR_UI["AdminContent.jsx\n(Home, About, Brands, Policy, FAQ Editors)"]
+        MEDIA_PICKER["CmsImageUpload.jsx\n(Single & Batch Media Selector)"]
+    end
+
+    subgraph ObjectStorage["Supabase Object Storage"]
+        STORAGE_BUCKET["'products' Bucket\n(Folder: cms/{timestamp}_{hash}.ext)"]
+        CDN_ENDPOINT["Supabase Storage CDN\n(Public Asset Delivery & Caching)"]
+    end
+
+    subgraph DatabaseTier["PostgreSQL Engine"]
+        CONTENT_TABLE[("page_content Table\n(Keyed by unique page_name)")]
+        JSONB_DOC["JSONB Document Payload\n({ heroTitle, worlds, sections, ticker })"]
+    end
+
+    subgraph ClientHydration["Storefront Delivery (React 18 SPA)"]
+        REACT_QUERY["TanStack React Query Cache\n(key: ['page_content', pageName], staleTime: 1hr)"]
+        PUBLIC_PAGE["Public Pages\n(HomePage, AboutPage, Policies, Navbar)"]
+        DYNAMIC_DOM["Dynamic DOM Rendering\n(Hero, Signature Worlds, Legal Appendices)"]
+    end
+
+    OPERATOR -->|Edits Copy / Structure| EDITOR_UI
+    OPERATOR -->|Uploads Image Assets| MEDIA_PICKER
+    MEDIA_PICKER -->|uploadContentImage(file)| STORAGE_BUCKET
+    STORAGE_BUCKET -->|Generates getPublicUrl| CDN_ENDPOINT
+    CDN_ENDPOINT -->|Embeds CDN URL into Payload| EDITOR_UI
+
+    EDITOR_UI -->|updatePageContent(pageName, newContent)| CONTENT_TABLE
+    CONTENT_TABLE -->|Upserts Record ON CONFLICT page_name| JSONB_DOC
+
+    PUBLIC_PAGE -->|usePageContent(pageName)| REACT_QUERY
+    REACT_QUERY -->|Stale Cache Miss / Background Fetch| CONTENT_TABLE
+    JSONB_DOC -->|Returns Document Object| REACT_QUERY
+    REACT_QUERY -->|Hydrates State| PUBLIC_PAGE
+    PUBLIC_PAGE -->|Renders Visual Components| DYNAMIC_DOM
+
+    EDITOR_UI -.->|Invalidates queryKey: ['page_content', pageName]| REACT_QUERY

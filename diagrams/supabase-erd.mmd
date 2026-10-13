@@ -1,0 +1,143 @@
+erDiagram
+    PROFILES ||--o{ ORDERS : "places"
+    PROFILES ||--o{ CART_ITEMS : "maintains"
+    PROFILES ||--o{ WISHLIST_ITEMS : "bookmarks"
+    PROFILES ||--o{ REVIEWS : "authors"
+    PROFILES ||--o{ USER_COUPONS : "claims"
+    
+    PRODUCTS ||--o{ CART_ITEMS : "referenced_by"
+    PRODUCTS ||--o{ WISHLIST_ITEMS : "favorited_in"
+    PRODUCTS ||--o{ REVIEWS : "evaluated_in"
+    PRODUCTS ||--o{ ORDER_ITEMS : "sold_as"
+
+    ORDERS ||--|{ ORDER_ITEMS : "contains"
+    COUPONS ||--o{ USER_COUPONS : "awarded_to"
+
+    PROFILES {
+        uuid id PK "References auth.users"
+        varchar full_name
+        varchar phone_number
+        varchar role "admin or customer"
+        integer points "Loyalty points balance"
+        boolean is_active
+        timestamptz created_at
+    }
+
+    PRODUCTS {
+        uuid id PK
+        varchar name
+        varchar brand
+        varchar category
+        text description
+        jsonb sizes "Array of {size, price, stock}"
+        boolean is_on_sale
+        numeric original_price_factor
+        jsonb notes "Object of {top, heart, base}"
+        numeric rating
+        text image_urls "Array of Supabase CDN URLs"
+        varchar label "e.g. Bestseller, Limited"
+        timestamptz created_at
+    }
+
+    ORDERS {
+        uuid id PK
+        uuid user_id FK
+        integer order_number "Auto-incrementing reference"
+        varchar customer_email
+        jsonb shipping_address "Address, City, Emirate, Phone"
+        numeric total "Final payable in AED"
+        numeric discount_amount "Coupon + points discount"
+        numeric shipping_cost "Calculated shipping charge"
+        varchar payment_status "unpaid, paid, refunded"
+        varchar status "pending, processing, shipped, completed, cancelled"
+        varchar payment_method "stripe or cod"
+        varchar stripe_session_id
+        varchar payment_intent_id
+        timestamptz order_date
+    }
+
+    ORDER_ITEMS {
+        uuid id PK
+        uuid order_id FK
+        varchar product_name
+        varchar size "e.g. 50ml, 100ml"
+        integer quantity
+        numeric price_at_purchase "Captured unit price"
+    }
+
+    CART_ITEMS {
+        uuid id PK
+        uuid user_id FK
+        uuid product_id FK
+        varchar size "Selected bottle variant"
+        integer quantity
+        numeric price_at_purchase
+        timestamptz updated_at
+    }
+
+    COUPONS {
+        uuid id PK
+        varchar code "Unique promo string"
+        varchar type "fixed or percentage"
+        numeric value
+        numeric min_spend
+        numeric max_discount
+        boolean is_active
+        date end_date
+    }
+
+    USER_COUPONS {
+        uuid id PK
+        uuid user_id FK
+        uuid coupon_id FK
+        timestamptz created_at
+    }
+
+    WISHLIST_ITEMS {
+        uuid id PK
+        uuid user_id FK
+        uuid product_id FK
+        timestamptz created_at
+    }
+
+    REVIEWS {
+        uuid id PK
+        uuid product_id FK
+        uuid user_id FK
+        integer rating "1 to 5 stars"
+        varchar title
+        text body
+        timestamptz created_at
+    }
+
+    STORE_SETTINGS {
+        uuid id PK
+        varchar store_name
+        varchar store_email
+        boolean maintenance_mode "Locks non-admin users"
+        numeric points_per_aed "Loyalty accrual multiplier"
+        numeric points_per_review "Review reward points"
+        numeric points_to_aed "Redemption rate to AED"
+        numeric free_shipping_threshold "Threshold in AED"
+        numeric shipping_flat_rate "Default shipping fee"
+    }
+
+    PAGE_CONTENT {
+        uuid id PK
+        varchar page_name "Unique identifier e.g. home, terms, about"
+        jsonb content "Arbitrary validated document schema"
+        timestamptz updated_at
+    }
+
+    OFFERS {
+        uuid id PK
+        varchar title
+        text description
+        varchar discount_type "fixed or percentage"
+        numeric discount_value
+        numeric min_order_value
+        timestamptz start_date
+        timestamptz end_date
+        boolean is_active
+        text target_products "all or category list"
+    }

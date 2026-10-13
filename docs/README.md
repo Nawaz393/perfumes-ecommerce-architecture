@@ -2,17 +2,11 @@
 
 [← Main README](../README.md)
 
-This documentation suite details the architectural design, data modeling, client-side caching, and implementation patterns of **Luxin Perfumes (LUXINPERFUMES.COM)**.
-
-## Architecture Guides
-
-- [Code Examples](code-examples.md) — Production code snippets covering Supabase client isolation, Axios JWT interceptors, CMS React Query hydration, and JSONB queries.
-- [In-House Headless JSONB CMS](headless-jsonb-cms.md) — Architecture of the custom zero-dependency CMS engine, schema fallbacks, and real-time content publishing.
-- [Architecture Decision Records (ADRs)](decisions/README.md) — Context, decisions, trade-offs, and alternatives for core architectural choices.
-- [Diagram Source Files](../diagrams/README.md) — Reusable Mermaid source diagrams for system topology, component hierarchies, ERD, and CMS lifecycle.
-
-## Architectural Decision Records
-
-- [ADR 001 — Supabase Backend-as-a-Service Architecture](decisions/001-supabase-baas-architecture.md)
-- [ADR 002 — PostgreSQL JSONB Storage for In-House Headless CMS](decisions/002-jsonb-headless-cms.md)
-- [ADR 003 — Client-Side State Architecture and Caching Strategy](decisions/003-client-side-state-and-caching.md)
+- [System Architecture](architecture.md) — Request lifecycle, component hierarchy, route guards, and Supabase client isolation.
+- [Domain Map](domain-map.md) — Olfactory catalog, cart/checkout, headless CMS, and promotion bounded contexts.
+- [Code Examples](code-examples.md) — Production React 18 hooks, Supabase queries, and stored procedure invocations.
+- [Supabase Security & RLS](supabase-security-and-rls.md) — Multi-role access control, PostgREST policies, and GoTrue JWT verification.
+- [Headless JSONB CMS](headless-jsonb-cms.md) — Dynamic content blocks, document schemas, and zero-downtime publishing.
+- [Checkout & Inventory](checkout-and-inventory.md) — Stripe hosted rails vs. UAE Cash on Delivery (COD) and stock decrement.
+- [Architecture Decision Records (ADRs)](decisions/README.md) — Technical trade-offs, BaaS decisions, and state caching choices.
+- [Diagram Source Files](../diagrams/README.md) — Reusable Mermaid diagrams.

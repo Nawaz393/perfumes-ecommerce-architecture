@@ -1,0 +1,33 @@
+sequenceDiagram
+    autonumber
+    actor Customer as Storefront Consumer
+    participant Storefront as React 18 Storefront
+    participant PostgREST as Supabase PostgREST / RPC
+    participant PG as PostgreSQL (12 Tables)
+    participant Express as Node.js / Express Bridge
+    participant Stripe as Stripe Checkout API
+    participant Delivery as UAE Courier (COD Rail)
+
+    Customer->>Storefront: Click "Checkout"
+    Storefront->>PostgREST: RPC calculate_cart_total(items, coupon_code)
+    PostgREST->>PG: Validate unit prices, variant stock & coupon rules
+    PG-->>Storefront: Deterministic total, discount, and tax
+
+    alt Payment Method: Stripe Hosted Checkout
+        Storefront->>Express: POST /api/create-checkout-session (cart_id, items, user_jwt)
+        Express->>Stripe: stripe.checkout.sessions.create({ line_items, metadata })
+        Stripe-->>Express: { sessionId, checkoutUrl }
+        Express-->>Storefront: Redirect to Stripe Hosted Checkout
+        Customer->>Stripe: Submits payment
+        Stripe->>Express: Webhook event checkout.session.completed
+        Express->>PostgREST: UPDATE orders SET status = 'paid', payment_ref = stripe_pi
+        PostgREST->>PG: Decrement product variant stock & emit audit log
+        Express-->>Stripe: 200 OK
+        Stripe-->>Customer: Redirect to /order-success
+    else Payment Method: UAE Cash on Delivery (COD)
+        Storefront->>PostgREST: INSERT INTO orders (user_id, status='pending_cod', payment_method='cod')
+        PostgREST->>PG: Reserve variant inventory & flag courier dispatch
+        PG-->>Storefront: Order Confirmation (Order ID & Tracking Code)
+        Storefront-->>Customer: Render COD receipt & delivery tracking
+        Delivery->>Customer: Dispatch fragrance package & collect cash
+    end

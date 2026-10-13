@@ -1,20 +1,11 @@
-# Architecture Diagrams
+# Diagram Sources
 
-[← Main README](../README.md) · [Documentation Index](../docs/README.md)
+[← Main README](../README.md) · [← Documentation Index](../docs/README.md)
 
-This directory contains standalone, reusable [Mermaid](https://mermaid.js.org/) diagram definitions modeling the architecture, component topology, data schemas, and lifecycle workflows of the Luxin Perfumes digital commerce platform.
+- [System Context](system-context.mmd) — High-level client, CDN, Supabase, Express API bridge, and Stripe integration.
+- [Component Architecture](component-architecture.mmd) — React 18 component hierarchy, route guards, and layouts.
+- [Supabase Schema & ERD](supabase-erd.mmd) — Entity-relationship diagram of all 12 core PostgreSQL tables.
+- [Checkout & Payment Sequence](checkout-payment-flow.mmd) — Sequence flow across Stripe Checkout and UAE Cash on Delivery.
+- [Headless CMS Lifecycle](headless-cms-lifecycle.mmd) — JSONB document flow from Admin UI to storefront hydration.
 
-## Available Diagrams
-
-| Diagram | Source File | Description |
-|---|---|---|
-| **System Context** | [system-context.mmd](system-context.mmd) | High-level topology across React SPA clients, Vite CDN, Supabase PostgreSQL/Auth/Storage, Node/Express API bridge, and Stripe. |
-| **Component Architecture** | [component-architecture.mmd](component-architecture.mmd) | React 18 component tree, route guards, public vs. admin layouts, and dynamic theme switching. |
-| **Supabase Database Schema (ERD)** | [supabase-erd.mmd](supabase-erd.mmd) | Entity-relationship model of the 12 core tables including JSONB columns for olfactory notes and variants. |
-| **Headless CMS Lifecycle** | [headless-cms-lifecycle.mmd](headless-cms-lifecycle.mmd) | In-house dynamic content authoring flow from admin editors through Supabase Storage/JSONB to TanStack Query hydration. |
-
-## Rendering Notes
-
-GitHub automatically renders Mermaid definitions embedded in Markdown documents. To view or edit these `.mmd` files locally or in documentation portals:
-- Use the Mermaid CLI (`mmdc`): `npx @mermaid-js/mermaid-cli -i system-context.mmd -o system-context.svg`
-- Or paste the contents into the [Mermaid Live Editor](https://mermaid.live).
+GitHub renders Mermaid natively in Markdown. These source files keep architecture models modular and version-controlled.

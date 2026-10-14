@@ -1,4 +1,4 @@
-# Luxury Fragrance E-Commerce Platform — Architecture Showcase
+# Luxury Fragrance E-Commerce Platform  Architecture Showcase
 
 A documentation-first architectural case study of a bespoke Haute Parfumerie and digital commerce platform engineered for the prestige fragrance market, featuring luxury catalog exploration, variant-level inventory management, and an in-house headless CMS.
 
